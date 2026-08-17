@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-description: Coordinate subagents automatically for substantial tasks that split into at least two independent, non-overlapping, independently verifiable workstreams. Use for parallel codebase exploration, reviews, test analysis, documentation checks, or isolated implementation with distinct ownership when delegation would materially improve speed or quality. Do not use for trivial, sequential, tightly coupled, shared-file, or single-owner work.
+description: Coordinate subagents automatically throughout substantial or long-running tasks that split into at least two independent, non-overlapping, independently verifiable workstreams. Use at task start and re-evaluate after continuations, context compaction, stage transitions, or worker integration for parallel exploration, reviews, tests, documentation, or isolated implementation with distinct ownership. Do not use for trivial, sequential, tightly coupled, shared-file, or single-owner work.
 ---
 
 # Orchestrate
@@ -14,6 +14,8 @@ When this skill is active, do not wait for the user to request delegation.
 1. Identify independent work packets before starting substantive work.
 2. If at least two bounded packets can proceed independently and delegation would materially improve speed or quality, delegate them automatically.
 3. If the work is small, sequential, tightly coupled, likely to cause shared-file conflicts, or the client has no subagent capability, continue as a single agent.
+
+Re-evaluate all unfinished work at every new user continuation, after context compaction, at each stage transition, and after integrating a worker result. Long-running tasks must not rely only on the initial delegation decision. A request to clean up, close, or reduce stale agents is lifecycle hygiene, not a permanent ban on future delegation. Disable future delegation only when the user explicitly asks to stop it.
 
 Prefer two or three useful workers over maximizing agent count. Run independent packets concurrently. Do not parallelize a stage whose inputs depend on another unfinished stage.
 
@@ -53,3 +55,5 @@ Keep ambiguous architecture, cross-cutting changes, destructive actions, externa
 Remain available to the user while workers run and continue only useful, non-overlapping main-agent work. Reuse an existing worker for follow-up in its assigned lane when appropriate.
 
 Wait for every required result. Inspect the returned evidence and diffs, resolve integration issues, and run final end-to-end verification from the main agent. Let the main agent, not individual workers, summarize general working-tree state when it is relevant. Report one consolidated outcome; do not treat a worker's unverified claim as completion.
+
+After integrating a worker result, close or stop its completed thread or handle when supported. Keep only agents with unfinished assigned work. Closing completed or stale workers is routine hygiene and does not prevent spawning a later eligible packet. When the unfinished work changes, repeat **Decide and delegate** before resuming substantive main-agent work.
