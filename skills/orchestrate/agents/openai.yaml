@@ -1,7 +1,7 @@
 interface:
   display_name: "Orchestrate"
-  short_description: "Coordinate bounded parallel work"
-  default_prompt: "Use $orchestrate with a bounded worker and review envelope: delegate only independent work, reuse and close lanes, keep architecture, security, and integration on the main agent, and stop when acceptance criteria pass."
+  short_description: "Coordinate autonomous bounded parallel work"
+  default_prompt: "Use $orchestrate to proceed autonomously within the authorized scope: delegate only independent work inside a bounded envelope, keep architecture, security, and integration on the main agent, and ask only when new authority or an enforced approval is genuinely required."
 
 policy:
   allow_implicit_invocation: true

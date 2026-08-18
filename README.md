@@ -2,9 +2,11 @@
 
 Orchestrate is an instruction-only Codex skill that automatically coordinates a small, bounded set of subagents when substantial work contains at least two independent, non-overlapping, independently verifiable packets. Small, sequential, tightly coupled, shared-file, single-owner, or open-ended hardening work stays with the main agent.
 
-The skill uses a soft default envelope of no more than three active workers, two delegation waves, and six new worker starts for a substantive request or explicitly defined stage. Continuations, context compaction, stage changes, and worker results cause a fresh decision within the remaining envelope; they do not automatically justify a spawn or reset the budget. Once the stated acceptance evidence passes, the stage freezes and adjacent findings are reported instead of turning into recursive review and remediation.
+The skill uses a soft default envelope of no more than three active workers, two delegation waves, and six new worker starts for a substantive request or explicitly defined stage. Continuations, context compaction, stage changes, and worker results cause a fresh decision within the remaining envelope; they do not automatically justify a spawn or reset the budget. Reaching the envelope stops additional spawning, not the task: the main agent completes the remaining in-scope work without asking for permission to continue. Once the stated acceptance evidence passes, the stage freezes and adjacent findings are reported instead of turning into recursive review and remediation.
 
-The main agent keeps responsibility for user communication, approvals, architecture, security and privilege policy, cross-cutting integration, deployment decisions, and final verification. Clear, narrow packets may be routed sparingly to Luna Max with no inherited conversation turns when that worker type is available. Luna Max is a routing target, not a reason to create extra work.
+The user's task request authorizes ordinary, reversible, in-scope delegation, edits, tests, integration, and verification. The skill does not ask for plan approval, delegation approval, permission to continue, stage-by-stage confirmation, or approval after a progress checkpoint. Checkpoints are non-blocking. The main agent keeps responsibility for user communication, genuinely required approval decisions, architecture, security and privilege policy, cross-cutting integration, deployment decisions, and final verification. Clear, narrow packets may be routed sparingly to Luna Max with no inherited conversation turns when that worker type is available. Luna Max is a routing target, not a reason to create extra work.
+
+This runtime autonomy cannot override Codex's sandbox, connector, destructive-action, or administrator-enforced approvals. When new authority is genuinely required, the skill completes other safe work first and asks once with the concrete action and reason. The approval below is only for installing the skill on a machine; it is not a recurring approval model for later tasks.
 
 When applicable, each worker receives a working-tree baseline and sibling ownership map. Out-of-scope changes are preserved without generic dirty-worktree commentary, while real ownership or evidence conflicts are escalated. A reader whose conclusion depends on files being actively edited is sequenced after the writer or given an immutable snapshot. Existing lanes are reused where practical, and completed or stale workers are closed without disabling later eligible delegation.
 
@@ -25,19 +27,22 @@ Start your response by explaining in plain language:
    decision point and does not automatically cause another spawn.
 3. Its soft default envelope: at most three active workers, two delegation waves,
    and six new worker starts for a substantive request or explicitly defined stage;
-   exhausting it requires main-agent completion, a partial result, or my approval
-   for a specific expansion.
-4. That Luna Max with fork turns set to none is used sparingly for clear, bounded
+   reaching it stops additional spawning while the main agent continues the remaining
+   in-scope work without asking me for permission.
+4. That ordinary in-scope work proceeds without plan, delegation, continuation,
+   stage-boundary, integration, or checkpoint approvals; checkpoints are non-blocking.
+   It asks only when new authority or a platform-enforced approval is genuinely required.
+5. That Luna Max with fork turns set to none is used sparingly for clear, bounded
    packets when supported, while architecture, security and privilege policy,
    cross-cutting integration, deployment decisions, and final review stay with the
    main agent.
-5. How it classifies findings, limits review/remediation recursion, freezes a stage
+6. How it classifies findings, limits review/remediation recursion, freezes a stage
    after acceptance evidence passes, and reports adjacent issues without silently
    expanding scope.
-6. How it preserves expected shared-worktree changes without noisy status reports,
+7. How it preserves expected shared-worktree changes without noisy status reports,
    while sequencing readers after writers when final file state matters.
-7. Which files will be installed and the destination Codex skill directory.
-8. The material tradeoffs, including additional token use, delegated-context
+8. Which files will be installed and the destination Codex skill directory.
+9. The material tradeoffs, including additional token use, delegated-context
    privacy, worker/model availability, and conflict risk in parallel write-heavy work.
 
 Then ask whether I approve proceeding with installation. Do not install, modify files,
@@ -72,7 +77,7 @@ skills/
         └── openai.yaml
 ```
 
-- `SKILL.md` defines triggering, the worker and review envelope, Luna Max routing, scope classification, convergence, shared-worktree coordination, lifecycle cleanup, and main-agent integration requirements.
+- `SKILL.md` defines triggering, autonomous in-scope execution, the worker and review envelope, Luna Max routing, scope classification, convergence, shared-worktree coordination, lifecycle cleanup, and main-agent integration requirements.
 - `agents/openai.yaml` supplies the skill's UI metadata and explicitly permits implicit invocation.
 
 ## Try it after installation
@@ -83,13 +88,14 @@ On a later Codex turn, invoke it explicitly with a substantial task:
 $orchestrate Review this branch using independent lanes for correctness, missing
 tests, and documentation drift. Use the default bounded envelope, keep architecture,
 security, and integration on the main agent, freeze the stage when its acceptance
-checks pass, and report adjacent findings without expanding scope.
+checks pass, report adjacent findings without expanding scope, and do not pause for
+routine approvals.
 ```
 
 Codex may also activate it implicitly when a task matches the skill description.
 
 ## Credits and license
 
-Inspired by Eric Provencher's MIT-licensed [orchestrate skill](https://github.com/provencher/codex-skills/tree/main/orchestrate) and his recommendation to route very clear, bounded work to Luna Max with no forked turns. This expanded version adds selective automatic activation, a finite worker and review envelope, convergence and scope controls, self-contained task packets, ownership boundaries, shared-worktree coordination, lifecycle cleanup, approval handling, and final integration checks.
+Inspired by Eric Provencher's MIT-licensed [orchestrate skill](https://github.com/provencher/codex-skills/tree/main/orchestrate) and his recommendation to route very clear, bounded work to Luna Max with no forked turns. This expanded version adds selective automatic activation, autonomous in-scope execution, a finite worker and review envelope, convergence and scope controls, self-contained task packets, ownership boundaries, shared-worktree coordination, lifecycle cleanup, approval handling, and final integration checks.
 
 Released under the [MIT License](LICENSE).

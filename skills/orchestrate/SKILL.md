@@ -1,11 +1,11 @@
 ---
 name: orchestrate
-description: Coordinate a small, bounded set of subagents for substantial tasks with at least two independent, non-overlapping, independently verifiable workstreams. Use for parallel exploration, tests, documentation, review, or isolated implementation with distinct ownership; maintain worker and review budgets, keep architecture, security, and integration on the main agent, and stop when acceptance criteria pass. Do not use for trivial, sequential, tightly coupled, shared-file, single-owner, or open-ended hardening work.
+description: Coordinate a small, bounded set of subagents autonomously within the user's authorized scope for substantial tasks with at least two independent, non-overlapping, independently verifiable workstreams. Use for parallel exploration, tests, documentation, review, or isolated implementation with distinct ownership; maintain worker and review budgets, proceed without routine confirmation, keep architecture, security, and integration on the main agent, and stop when acceptance criteria pass. Do not use for trivial, sequential, tightly coupled, shared-file, single-owner, or open-ended hardening work.
 ---
 
 # Orchestrate
 
-Keep the main agent responsible for decomposition, ambiguous decisions, user communication, approvals, architecture, security and privilege policy, integration, and final verification.
+Keep the main agent responsible for decomposition, ambiguous decisions, user communication, any approval decision that is genuinely required, architecture, security and privilege policy, integration, and final verification.
 
 ## Decide and delegate
 
@@ -21,6 +21,21 @@ Continuations, context compaction, stage transitions, and worker results are dec
 Prefer two or three useful workers over maximizing agent count. Run independent packets concurrently. Do not parallelize a stage whose inputs depend on another unfinished stage, and do not delegate work the main agent can complete faster than the coordination overhead.
 
 Before spawning, record the relevant working-tree baseline when applicable and assign each packet a stable evidence boundary. Do not run a read-only worker concurrently with a writer when the reader's conclusion depends on the writer's final files. Sequence the reader after the writer, or give it an immutable commit or isolated worktree snapshot. Let read-only workers overlap only on evidence that will remain stable for their task.
+
+## Proceed without routine approval
+
+Treat the user's request as authorization for ordinary, reversible, in-scope delegation, edits, tests, integration, and verification that parent instructions and current permissions allow. Proceed through those steps without asking for plan approval, delegation approval, permission to continue, approval at a stage boundary, or approval after a progress checkpoint. Do not invent an approval gate.
+
+When a system, developer, `AGENTS.md`, tool, sandbox, connector, or explicit user instruction requires approval, honor it; this skill cannot waive platform enforcement. Before surfacing a request, complete other safe in-scope work and combine related permission needs into one precise request when possible.
+
+Ask the user only when work cannot safely continue without:
+
+- New authority for a material scope expansion or a destructive, irreversible, or external action not already clearly authorized.
+- A choice that materially changes the requested outcome.
+- Disclosure or use of sensitive information beyond the existing authorization.
+- An enforced tool, sandbox, or connector approval.
+
+Do not ask when a reasonable in-scope assumption or main-agent completion suffices. State consequential assumptions in a progress update or the final report and keep working.
 
 ## Set a bounded envelope
 
@@ -40,7 +55,7 @@ Use these soft upper bounds unless the task clearly needs less:
 
 A wave is one batch of initial or follow-up assignments launched after a decision or integration checkpoint. Reusing a worker for another turn consumes a wave but not a new worker start. A continuation such as "proceed," a compaction, a worker result, or an unplanned finding does not reset the envelope. Start a fresh envelope only for a materially new user request or an explicitly planned stage with new acceptance criteria.
 
-When the envelope is exhausted, stop spawning. Finish the bounded remainder on the main agent, return a clearly identified partial result, or ask the user to approve a specific expansion. Never silently turn a limited review into an open-ended audit or hardening campaign.
+When the envelope is exhausted, stop spawning and finish the bounded remainder on the main agent. Do not ask for permission to continue or to enlarge the worker budget merely because a limit was reached. Only if the acceptance evidence cannot be met without additional delegation after exhausting safe main-agent alternatives should the main agent give one concise checkpoint and request a specific expansion. Never silently turn a limited review into an open-ended audit or hardening campaign.
 
 ## Route bounded work to Luna Max
 
@@ -55,7 +70,7 @@ Because `fork_turns: "none"` supplies no surrounding conversation, make every de
 - The relevant working-tree baseline when applicable, including pre-existing modified or untracked files.
 - The sibling ownership map and changes expected from concurrent lanes.
 - All necessary inputs, paths, requirements, and prior decisions.
-- Constraints, prohibited changes, and approval boundaries.
+- Constraints, prohibited changes, existing authorization, and any hard approval boundary.
 - The required deliverable and verification criteria or command.
 - A request to return a concise summary, changed files, verification results, and blockers.
 
@@ -71,7 +86,7 @@ Require a worker to escalate only when a concurrent change touches a file it mus
 
 Never give multiple write-capable workers overlapping ownership. Do not overlap a reader with an active writer on evidence whose final state matters to the reader. Read-only workers may inspect the same stable evidence when their review questions are distinct.
 
-Keep ambiguous decisions, destructive actions, external writes, and user approvals with the main agent.
+Keep ambiguous decisions and genuinely approval-requiring actions with the main agent. Do not treat ordinary in-scope writes, tests, commits, pushes, deployments, or other external actions as new approval gates when the user's request or applicable parent instructions already authorize them.
 
 ## Control scope and convergence
 
@@ -82,11 +97,11 @@ Classify every new finding before acting on it:
 - **Adjacent issue:** useful but unnecessary for the current acceptance criteria.
 - **Material scope expansion:** changes architecture, security posture, product behavior, deployment scope, or the meaning of completion.
 
-Only required blockers and in-scope follow-ups may consume the current envelope. Park adjacent issues for the consolidated report without spawning or implementing them. Ask the user before a material scope expansion.
+Only required blockers and in-scope follow-ups may consume the current envelope. Park adjacent issues and material scope expansions for the consolidated report without spawning or implementing them. Ask once about a material expansion only when the original acceptance criteria genuinely cannot be met without it; otherwise report it at the end without interrupting progress.
 
 Allow one review-and-remediation cycle per lane by default. A reviewer may identify fixes, but its report does not automatically justify another reviewer or a fresh delegation wave. After targeted verification passes, freeze the stage. Reopen it only when acceptance evidence fails or an unresolved high-severity in-scope blocker remains; do not create reviewer-of-reviewer recursion.
 
-After two context compactions, or before any material scope expansion, give the user a checkpoint stating the original objective, verified progress, remaining in-scope work, cumulative worker starts and waves, and the next stopping condition.
+After two context compactions, or before any material scope expansion, give the user a non-blocking checkpoint stating the original objective, verified progress, remaining in-scope work, cumulative worker starts and waves, and the next stopping condition. Continue immediately within the authorized scope; a checkpoint is not an approval request.
 
 Stop when the acceptance evidence passes and no required blocker remains. Report residual risks and parked findings without converting them into new work.
 
@@ -98,4 +113,4 @@ Wait for every required result. Inspect the returned evidence and diffs, resolve
 
 After integrating a worker result, close or stop its completed thread or handle when supported. Keep only agents with unfinished assigned work. Closing completed or stale workers is routine hygiene and does not prevent a later eligible delegation.
 
-Update the orchestration ledger after every integration checkpoint. Re-evaluate unfinished work within the remaining envelope before resuming substantive main-agent work. Never reopen a frozen stage for an adjacent finding, and never treat a successful worker report as completion until the main agent has verified the stage acceptance evidence.
+Update the orchestration ledger after every integration checkpoint. Re-evaluate unfinished work within the remaining envelope and resume automatically. Never ask for permission merely to integrate a completed result or continue the next in-scope stage. Never reopen a frozen stage for an adjacent finding, and never treat a successful worker report as completion until the main agent has verified the stage acceptance evidence.
