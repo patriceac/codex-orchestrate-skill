@@ -1,7 +1,7 @@
 interface:
   display_name: "Orchestrate"
-  short_description: "Delegate bounded work to parallel agents"
-  default_prompt: "Use $orchestrate throughout this substantial task: delegate safe independent workstreams, close completed workers, re-evaluate remaining work, and integrate the results."
+  short_description: "Coordinate bounded parallel work"
+  default_prompt: "Use $orchestrate with a bounded worker and review envelope: delegate only independent work, reuse and close lanes, keep architecture, security, and integration on the main agent, and stop when acceptance criteria pass."
 
 policy:
   allow_implicit_invocation: true
