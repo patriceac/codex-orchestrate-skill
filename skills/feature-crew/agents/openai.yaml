@@ -1,0 +1,7 @@
+interface:
+  display_name: "Feature Crew"
+  short_description: "Run gated specification-first feature delivery"
+  default_prompt: "Use $feature-crew to staff a PM, Dev, Test, UX, and Content crew, align the three specifications, obtain my sign-offs, and execute only after the gates pass."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,432 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:feature-crew:project-state:v1",
+  "title": "Feature Crew canonical project state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "revision",
+    "created_at",
+    "updated_at",
+    "project",
+    "phase",
+    "overall_status",
+    "crew",
+    "artifacts",
+    "open_questions",
+    "decisions",
+    "risks",
+    "issues",
+    "asks",
+    "dependencies",
+    "artifact_links",
+    "milestones",
+    "work_packages",
+    "test",
+    "stakeholder_agreement",
+    "specification_changes",
+    "status_events",
+    "status_history",
+    "lifecycle_history"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "revision": { "type": "integer", "minimum": 0 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "objective"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "objective": { "type": "string", "minLength": 1 }
+      }
+    },
+    "phase": { "$ref": "#/$defs/phase" },
+    "overall_status": { "$ref": "#/$defs/overallStatus" },
+    "crew": {
+      "type": "array",
+      "minItems": 5,
+      "items": { "$ref": "#/$defs/crewMember" }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pm_spec", "dev_design", "test_plan"],
+      "properties": {
+        "pm_spec": { "$ref": "#/$defs/artifact" },
+        "dev_design": { "$ref": "#/$defs/artifact" },
+        "test_plan": { "$ref": "#/$defs/artifact" }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/openQuestion" }
+    },
+    "decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/decision" }
+    },
+    "risks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/risk" }
+    },
+    "issues": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/issue" }
+    },
+    "asks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ask" }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/dependency" }
+    },
+    "artifact_links": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/artifactLink" }
+    },
+    "milestones": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/milestone" }
+    },
+    "work_packages": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/workPackage" }
+    },
+    "test": { "$ref": "#/$defs/testState" },
+    "stakeholder_agreement": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/stakeholderAgreement" }
+    },
+    "specification_changes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/specificationChange" }
+    },
+    "status_events": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/statusEvent" }
+    },
+    "status_history": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/statusEntry" }
+    },
+    "lifecycle_history": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/lifecycleEntry" }
+    }
+  },
+  "$defs": {
+    "phase": {
+      "type": "string",
+      "enum": [
+        "Intake",
+        "PM Spec Drafting",
+        "PM Spec Internal Review",
+        "PM Spec Executive Review",
+        "PM Spec Approved",
+        "Dev Design Drafting",
+        "Dev Design Internal Review",
+        "Dev Design Executive Review",
+        "Dev Design Approved",
+        "Test Plan Drafting",
+        "Test Plan Internal Review",
+        "Test Plan Executive Review",
+        "Test Plan Approved",
+        "Execution",
+        "Validation",
+        "Done",
+        "Completed"
+      ]
+    },
+    "overallStatus": {
+      "type": "string",
+      "enum": ["On Track", "Late", "Blocked", "Completed"]
+    },
+    "role": {
+      "type": "string",
+      "enum": ["PM", "Dev", "Test", "UX", "Content"]
+    },
+    "crewMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "owner", "agent_ref", "active"],
+      "properties": {
+        "role": { "$ref": "#/$defs/role" },
+        "owner": { "type": "string" },
+        "agent_ref": { "type": ["string", "null"] },
+        "active": { "type": "boolean" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "version", "verdict", "summary", "material", "status", "created_at"],
+      "properties": {
+        "id": { "type": "string" },
+        "role": { "$ref": "#/$defs/role" },
+        "version": { "type": "string" },
+        "verdict": { "enum": ["approve", "challenge"] },
+        "summary": { "type": "string" },
+        "material": { "type": "boolean" },
+        "status": { "enum": ["Open", "Resolved"] },
+        "resolution": { "type": ["string", "null"] },
+        "created_at": { "type": "string", "format": "date-time" },
+        "resolved_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "version", "approver", "date", "override", "notes"],
+      "properties": {
+        "status": { "enum": ["Not Approved", "Approved"] },
+        "version": { "type": ["string", "null"] },
+        "approver": { "type": ["string", "null"] },
+        "date": { "type": ["string", "null"], "format": "date-time" },
+        "override": { "type": "boolean" },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "owner", "version", "state", "reviews", "approval"],
+      "properties": {
+        "path": { "type": "string" },
+        "owner": { "$ref": "#/$defs/role" },
+        "version": { "type": "string" },
+        "state": { "enum": ["Draft", "Internal Review", "Executive Review", "Approved"] },
+        "reviews": { "type": "array", "items": { "$ref": "#/$defs/review" } },
+        "approval": { "$ref": "#/$defs/approval" }
+      }
+    },
+    "openQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "owner", "answer_from", "why_it_matters", "recommendation", "executive_input", "status", "resolution", "related_to"],
+      "properties": {
+        "id": { "type": "string" },
+        "question": { "type": "string" },
+        "owner": { "type": "string" },
+        "answer_from": { "type": "string" },
+        "why_it_matters": { "type": "string" },
+        "recommendation": { "type": ["string", "null"] },
+        "executive_input": { "type": "boolean" },
+        "status": { "enum": ["Open", "Resolved"] },
+        "resolution": { "type": ["string", "null"] },
+        "related_to": { "type": ["string", "null"] }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "decision", "context", "alternatives", "rationale", "owner", "date", "affected", "executive_override"],
+      "properties": {
+        "id": { "type": "string" },
+        "decision": { "type": "string" },
+        "context": { "type": "string" },
+        "alternatives": { "type": "array", "items": { "type": "string" } },
+        "rationale": { "type": "string" },
+        "owner": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "affected": { "type": "array", "items": { "type": "string" } },
+        "executive_override": { "type": "boolean" }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "area", "owner", "impact", "mitigation", "status"],
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "area": { "enum": ["Schedule", "Scope", "Quality", "Customer experience", "Architecture", "Dependencies", "Release"] },
+        "owner": { "type": "string" },
+        "impact": { "type": "string" },
+        "mitigation": { "type": "string" },
+        "status": { "enum": ["Open", "Resolved", "Realized"] }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "owner", "impact", "material", "blocker", "status", "resolution", "accepted"],
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "owner": { "type": "string" },
+        "impact": { "type": "string" },
+        "material": { "type": "boolean" },
+        "blocker": { "type": "boolean" },
+        "status": { "enum": ["Open", "Resolved", "Accepted"] },
+        "resolution": { "type": ["string", "null"] },
+        "accepted": { "type": "boolean" }
+      }
+    },
+    "ask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "requester", "target", "need", "why_it_matters", "needed_by", "status"],
+      "properties": {
+        "id": { "type": "string" },
+        "requester": { "type": "string" },
+        "target": { "type": "string" },
+        "need": { "type": "string" },
+        "why_it_matters": { "type": "string" },
+        "needed_by": { "type": ["string", "null"] },
+        "status": { "enum": ["Open", "Resolved"] }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "who", "need", "needed_by", "delivery_implication", "risk", "status"],
+      "properties": {
+        "id": { "type": "string" },
+        "who": { "type": "string" },
+        "need": { "type": "string" },
+        "needed_by": { "type": ["string", "null"] },
+        "delivery_implication": { "type": "string" },
+        "risk": { "type": "string" },
+        "status": { "enum": ["Open", "Resolved"] }
+      }
+    },
+    "artifactLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "location", "kind", "owner"],
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" },
+        "location": { "type": "string" },
+        "kind": { "type": "string" },
+        "owner": { "type": "string" }
+      }
+    },
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "outcome", "owner", "status", "comments", "required"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "outcome": { "type": "string" },
+        "owner": { "type": "string" },
+        "status": { "enum": ["Not Started", "On Track", "At Risk", "Blocked", "Done"] },
+        "comments": { "type": "string" },
+        "required": { "type": "boolean" }
+      }
+    },
+    "workPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "milestone_id", "name", "owner", "delivers", "source_references", "dependencies", "acceptance_criteria", "status", "comments", "validation_links", "required"],
+      "properties": {
+        "id": { "type": "string" },
+        "milestone_id": { "type": "string" },
+        "name": { "type": "string" },
+        "owner": { "type": "string" },
+        "delivers": { "type": "string" },
+        "source_references": { "type": "array", "items": { "type": "string" } },
+        "dependencies": { "type": "array", "items": { "type": "string" } },
+        "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+        "status": { "enum": ["Not Started", "In Progress", "Blocked", "Done"] },
+        "comments": { "type": "string" },
+        "validation_links": { "type": "array", "items": { "type": "string" } },
+        "required": { "type": "boolean" }
+      }
+    },
+    "testState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "automated_suite_passed", "evidence", "unresolved_acceptance_failures", "determination_by", "determined_at"],
+      "properties": {
+        "state": { "enum": ["Not Started", "In Progress", "Passed", "Failed"] },
+        "automated_suite_passed": { "type": "boolean" },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "unresolved_acceptance_failures": { "type": "array", "items": { "type": "string" } },
+        "determination_by": { "type": ["string", "null"] },
+        "determined_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "stakeholderAgreement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "role", "required", "agreed", "revision", "date", "comments"],
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "required": { "type": "boolean" },
+        "agreed": { "type": "boolean" },
+        "revision": { "type": "integer", "minimum": 0 },
+        "date": { "type": "string", "format": "date-time" },
+        "comments": { "type": "string" }
+      }
+    },
+    "specificationChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "artifact", "old_version", "new_version", "impact", "summary", "date", "affected", "invalidated", "return_phase"],
+      "properties": {
+        "id": { "type": "string" },
+        "artifact": { "enum": ["pm_spec", "dev_design", "test_plan"] },
+        "old_version": { "type": "string" },
+        "new_version": { "type": "string" },
+        "impact": { "enum": ["minor", "material"] },
+        "summary": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "affected": { "type": "array", "items": { "type": "string" } },
+        "invalidated": { "type": "array", "items": { "type": "string" } },
+        "return_phase": { "type": ["string", "null"] }
+      }
+    },
+    "statusEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "date", "kind", "overall_status", "summary", "snapshot_path", "changed_facts", "synchronized_revision", "synchronized_roles", "reported_event_ids"],
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "kind": { "enum": ["Heartbeat", "Event-driven"] },
+        "overall_status": { "$ref": "#/$defs/overallStatus" },
+        "summary": { "type": "string" },
+        "snapshot_path": { "type": ["string", "null"] },
+        "changed_facts": { "type": "array", "items": { "type": "string" } },
+        "synchronized_revision": { "type": "integer", "minimum": 0 },
+        "synchronized_roles": { "type": "array", "items": { "$ref": "#/$defs/role" } },
+        "reported_event_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "statusEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "summary", "created_at", "status", "reported_in"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "summary": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "status": { "enum": ["Pending", "Reported"] },
+        "reported_in": { "type": ["string", "null"] }
+      }
+    },
+    "lifecycleEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "from", "to", "actor", "reason", "override"],
+      "properties": {
+        "date": { "type": "string", "format": "date-time" },
+        "from": { "type": ["string", "null"] },
+        "to": { "$ref": "#/$defs/phase" },
+        "actor": { "type": "string" },
+        "reason": { "type": "string" },
+        "override": { "type": "boolean" }
+      }
+    }
+  }
+}

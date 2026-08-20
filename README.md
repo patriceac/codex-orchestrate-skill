@@ -1,4 +1,11 @@
-# Orchestrate for Codex
+# Codex Orchestration Skills
+
+This repository publishes two complementary Codex skills:
+
+- **Orchestrate** coordinates a small bounded set of independent subagents for parallel work.
+- **Feature Crew** runs substantial software feature delivery through PM, Dev, Test, UX, and Content roles with specification-first reviews, explicit Executive gates, persistent project state, execution tracking, validation, and concise status.
+
+## Orchestrate
 
 Orchestrate is an instruction-only Codex skill that automatically coordinates a small, bounded set of subagents when substantial work contains at least two independent, non-overlapping, independently verifiable packets. Small, sequential, tightly coupled, shared-file, single-owner, or open-ended hardening work stays with the main agent.
 
@@ -10,9 +17,24 @@ This runtime autonomy cannot override Codex's sandbox, connector, destructive-ac
 
 When applicable, each worker receives a working-tree baseline and sibling ownership map. Out-of-scope changes are preserved without generic dirty-worktree commentary, while real ownership or evidence conflicts are escalated. A reader whose conclusion depends on files being actively edited is sequenced after the writer or given an immutable snapshot. Existing lanes are reused where practical, and completed or stale workers are closed without disabling later eligible delegation.
 
-The skill contains no scripts, binaries, MCP servers, API keys, or additional permissions. Subagents inherit the parent task's permissions. Parallel agents can use more tokens, delegated context must be kept free of secrets and unnecessary private data, and write-heavy work still requires distinct ownership to avoid conflicts.
+The Orchestrate skill contains no scripts, binaries, MCP servers, API keys, or additional permissions. Subagents inherit the parent task's permissions. Parallel agents can use more tokens, delegated context must be kept free of secrets and unnecessary private data, and write-heavy work still requires distinct ownership to avoid conflicts.
 
-## Install with Codex — approval first
+## Feature Crew
+
+Feature Crew models a disciplined software product organization rather than a generic task tracker or Scrum assistant. It treats the user as Executive Sponsor, instantiates dedicated PM, Dev, Test, UX, and Content roles, and enforces this lifecycle:
+
+```text
+Intake → PM Spec review and approval → Dev Design review and approval
+       → Test Plan review and approval → Execution → Validation → Done → Completed
+```
+
+Implementation is blocked until all three specifications receive explicit Executive approval, unless the Executive records a deliberate gate override. Role agents review and challenge one another through repeated propose/challenge/resolve/re-review loops before the Executive is asked to decide anything the crew can resolve internally.
+
+The installed skill includes living specification and status templates, a documented JSON state model, and a dependency-free Python helper that atomically persists project state and enforces lifecycle, approval, change-control, status-vocabulary, Test Passed, Done, and Completed invariants. Twenty executable tests and matching behavioral scenarios cover the required operating model.
+
+Feature Crew uses actual subagents when the client supports them and schedules roles in waves when concurrency is limited. If subagents are unavailable, it requires explicitly separated role passes and preserves the same review evidence and gates in canonical state.
+
+## Install Orchestrate with Codex — approval first
 
 Copy this entire prompt into Codex:
 
@@ -55,7 +77,7 @@ installed skill, report its destination, and tell me when it will become availab
 
 This provides an inspect-and-explain step before any local change. After approval, Codex's built-in skill installer can download the public folder directly from GitHub.
 
-## Install target
+## Orchestrate install target
 
 The installable skill is this public folder:
 
@@ -67,18 +89,38 @@ The built-in installer copies it to `$CODEX_HOME/skills/orchestrate`, defaulting
 
 No separate configuration is required. The included metadata permits implicit invocation; explicit `$orchestrate` invocation remains available. Codex normally detects installed or updated skills automatically, and a restart is the fallback if the change does not appear.
 
+## Feature Crew install target
+
+The Feature Crew skill is independently installable from:
+
+```text
+https://github.com/patriceac/codex-orchestrate-skill/tree/main/skills/feature-crew
+```
+
+Install it with Codex's built-in skill installer after reviewing the files and approving the local installation. The installer copies the folder to `$CODEX_HOME/skills/feature-crew`, defaulting to `~/.codex/skills/feature-crew` when `CODEX_HOME` is not set. It requires no third-party Python packages.
+
 ## Repository contents
 
 ```text
 skills/
-└── orchestrate/
+├── orchestrate/
+│   ├── SKILL.md
+│   └── agents/
+│       └── openai.yaml
+└── feature-crew/
     ├── SKILL.md
-    └── agents/
-        └── openai.yaml
+    ├── agents/openai.yaml
+    ├── assets/templates/
+    ├── references/
+    │   └── roles/
+    ├── scripts/project_state.py
+    └── tests/
 ```
 
-- `SKILL.md` defines triggering, autonomous in-scope execution, the worker and review envelope, Luna Max routing, scope classification, convergence, shared-worktree coordination, lifecycle cleanup, and main-agent integration requirements.
-- `agents/openai.yaml` supplies the skill's UI metadata and explicitly permits implicit invocation.
+- `skills/orchestrate/SKILL.md` defines triggering, autonomous in-scope execution, the worker and review envelope, Luna Max routing, scope classification, convergence, shared-worktree coordination, lifecycle cleanup, and main-agent integration requirements.
+- `skills/feature-crew/SKILL.md` routes specification-first product delivery through the gated role workflow.
+- Feature Crew's references define lifecycle collaboration, canonical state, schema, and role contracts; its assets provide living review templates; its helper and tests enforce the deterministic invariants.
+- Each `agents/openai.yaml` supplies UI metadata and permits implicit invocation.
 
 ## Try it after installation
 
@@ -93,6 +135,16 @@ routine approvals.
 ```
 
 Codex may also activate it implicitly when a task matches the skill description.
+
+For a new feature project, invoke Feature Crew explicitly:
+
+```text
+$feature-crew Build feature X. Treat me as Executive Sponsor, have the crew
+resolve specification issues internally, and stop for my explicit approval at
+the PM Spec, Dev Design, and Test Plan gates before implementation.
+```
+
+Feature Crew persists its canonical state in the target project workspace, normally under `.feature-crew/<project-id>/` when that repository has no established project-document convention.
 
 ## Credits and license
 
