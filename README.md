@@ -32,6 +32,8 @@ Implementation is blocked until all three specifications receive explicit Execut
 
 The installed skill includes living specification and status templates, a documented JSON state model, and a dependency-free Python helper that atomically persists project state and enforces lifecycle, approval, change-control, status-vocabulary, Test Passed, Done, and Completed invariants. Twenty executable tests and matching behavioral scenarios cover the required operating model.
 
+For user-facing work, UX must classify the experience risk and provide versioned flow/state evidence. High-fidelity mockups are required only when material interaction, hierarchy, responsive, accessibility, brand, state-complexity, or coordination risks justify them; conventional design-system work can use lower-fidelity evidence with a documented rationale.
+
 Feature Crew uses actual subagents when the client supports them and schedules roles in waves when concurrency is limited. If subagents are unavailable, it requires explicitly separated role passes and preserves the same review evidence and gates in canonical state.
 
 ## Install Orchestrate with Codex — approval first

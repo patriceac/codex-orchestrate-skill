@@ -305,8 +305,39 @@
         "label": { "type": "string" },
         "location": { "type": "string" },
         "kind": { "type": "string" },
-        "owner": { "type": "string" }
-      }
+        "owner": { "type": "string" },
+        "version": { "type": ["string", "null"] },
+        "source_artifact": {
+          "type": ["string", "null"],
+          "enum": ["pm_spec", "dev_design", "test_plan", null]
+        },
+        "source_version": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "ux-flow",
+                  "ux-wireframe",
+                  "ux-high-fidelity-mockup",
+                  "ux-prototype"
+                ]
+              }
+            },
+            "required": ["kind"]
+          },
+          "then": {
+            "required": ["version", "source_artifact", "source_version"],
+            "properties": {
+              "version": { "type": "string", "minLength": 1 },
+              "source_artifact": { "const": "pm_spec" },
+              "source_version": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
     },
     "milestone": {
       "type": "object",

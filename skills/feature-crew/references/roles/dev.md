@@ -33,9 +33,9 @@ State the constraint and realistic options. Do not substitute a cheaper behavior
 
 After PM Spec approval, author the Dev Design Spec. Map significant PM requirement IDs to design components and map every major technical element back to a product or operational reason.
 
-Cover relevant architecture, interfaces, data, security/privacy, performance/scale, reliability/failure handling, telemetry/observability, dependencies, compatibility/migration, rollout/rollback, testability, implementation work packages, alternatives/tradeoffs, open questions, and risks. Adapt depth to actual project risk; do not create ceremony or a low-level task dump.
+Cover relevant architecture, interfaces, data, security/privacy, performance/scale, reliability/failure handling, telemetry/observability, dependencies, compatibility/migration, rollout/rollback, testability, implementation work packages, alternatives/tradeoffs, open questions, and risks. Map approved UX artifact IDs and exact versions to the components and mechanisms that preserve their flows, states, responsive behavior, input modes, and accessibility behavior. Adapt depth to actual project risk; do not create ceremony or a low-level task dump.
 
-During review, incorporate PM, Test, UX, and Content findings. If a finding exposes a product ambiguity, return it to PM rather than coding around it. Ensure UX and Content behavior remains exactly consistent with the approved product experience.
+During review, incorporate PM, Test, UX, and Content findings. If a finding exposes a product ambiguity, return it to PM rather than coding around it. Treat approved UX artifacts as versioned product requirements, not illustrative suggestions. Record any proposed deviation for upstream resolution rather than coding around it. Ensure UX and Content behavior remains exactly consistent with the approved product experience.
 
 ### Test Plan review
 

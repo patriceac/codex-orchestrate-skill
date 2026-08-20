@@ -19,6 +19,13 @@
 | --- | --- | --- | --- |
 | <decision or None> | <why> | <owner> | <IDs> |
 
+## UX Fidelity Decision
+
+- **Classification:** <Non-user-facing / Established-pattern user experience / Novel or materially UX-risky / Not applicable to this artifact review>
+- **Selected fidelity:** <decision>
+- **Approved UX artifacts and exact versions:** <IDs/versions/links or None>
+- **Exception or residual experience risk:** <rationale and disposition, or None>
+
 ## Remaining Open Questions or Disagreement
 
 | Question/disagreement | Why it matters | Alternatives | Crew recommendation | Consequences | Executive decision? |

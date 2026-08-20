@@ -18,9 +18,9 @@ These scenarios are the role/orchestration acceptance suite. Each maps to an exe
 
 **Given** a requirement has no objective observable result, **when** Test reviews the PM Spec, **then** Test challenges it and the artifact cannot reach Executive Review until the issue is resolved and the current version is re-reviewed.
 
-## FC-05 — UX challenges a poor flow
+## FC-05 — UX enforces appropriate design fidelity
 
-**Given** a flow traps the customer, omits an important state, or creates an inaccessible/inconsistent interaction, **when** UX reviews it, **then** UX records the user impact and a proposed resolution or required mockup.
+**Given** a user-facing flow traps the customer, omits an important state, lacks a UX scope/fidelity decision, or uses lower fidelity than its material triggers require, **when** UX reviews it, **then** UX records the user impact and challenges the current PM Spec. Executive Review remains blocked until the flow is resolved, the fidelity rationale is recorded, and every required design is linked with an exact version and supported PM Spec version. High fidelity is not required for non-user-facing or unambiguous established-pattern work with a documented rationale.
 
 ## FC-06 — Content challenges ambiguous language
 

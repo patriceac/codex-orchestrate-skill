@@ -46,6 +46,12 @@ MILESTONE_STATUSES = ("Not Started", "On Track", "At Risk", "Blocked", "Done")
 WORK_PACKAGE_STATUSES = ("Not Started", "In Progress", "Blocked", "Done")
 TEST_STATES = ("Not Started", "In Progress", "Passed", "Failed")
 ARTIFACT_KEYS = ("pm_spec", "dev_design", "test_plan")
+UX_ARTIFACT_KINDS = (
+    "ux-flow",
+    "ux-wireframe",
+    "ux-high-fidelity-mockup",
+    "ux-prototype",
+)
 ARTIFACT_CONFIG = {
     "pm_spec": {
         "owner": "PM",
@@ -1161,12 +1167,39 @@ def add_artifact_link(
     location: str,
     kind: str,
     owner: str,
+    *,
+    version: str | None = None,
+    source_artifact: str | None = None,
+    source_version: str | None = None,
 ) -> None:
     _require_unique_id(state["artifact_links"], artifact_id, "artifact link")
     if not all(value.strip() for value in (artifact_id, label, location, kind, owner)):
         raise StateError(
             "artifact-link id, label, location, kind, and owner must be non-empty"
         )
+    if version is not None and not version.strip():
+        raise StateError("artifact-link version cannot be blank")
+    if (source_artifact is None) != (source_version is None):
+        raise StateError(
+            "artifact-link source artifact and source version must be provided together"
+        )
+    if source_artifact is not None:
+        _require_artifact(source_artifact)
+        if not source_version or not source_version.strip():
+            raise StateError("artifact-link source version cannot be blank")
+    if kind in UX_ARTIFACT_KINDS:
+        if not version or not version.strip():
+            raise StateError("UX artifact links require an exact artifact version")
+        if source_artifact != "pm_spec" or not source_version:
+            raise StateError(
+                "UX artifact links require pm_spec and its exact version as the source"
+            )
+        current_pm_version = state["artifacts"]["pm_spec"]["version"]
+        if source_version != current_pm_version:
+            raise StateError(
+                "UX artifact source version must match the current PM Spec version "
+                f"{current_pm_version}"
+            )
     state["artifact_links"].append(
         {
             "id": artifact_id,
@@ -1174,6 +1207,9 @@ def add_artifact_link(
             "location": location,
             "kind": kind,
             "owner": owner,
+            "version": version,
+            "source_artifact": source_artifact,
+            "source_version": source_version,
         }
     )
     _touch(state)
@@ -1506,6 +1542,29 @@ def validate_state(state: dict[str, Any]) -> list[str]:
         ids = [item.get("id") for item in state[collection]]
         if len(ids) != len(set(ids)):
             errors.append(f"{collection} contains duplicate ids")
+
+    for artifact_link in state["artifact_links"]:
+        artifact_id = artifact_link.get("id")
+        kind = artifact_link.get("kind")
+        source_artifact = artifact_link.get("source_artifact")
+        source_version = artifact_link.get("source_version")
+        if (source_artifact is None) != (source_version is None):
+            errors.append(
+                f"artifact link {artifact_id} must pair source_artifact with source_version"
+            )
+        if source_artifact is not None and source_artifact not in ARTIFACT_KEYS:
+            errors.append(
+                f"artifact link {artifact_id} references an unknown source artifact"
+            )
+        if kind in UX_ARTIFACT_KINDS:
+            if not artifact_link.get("version"):
+                errors.append(
+                    f"UX artifact link {artifact_id} requires an exact artifact version"
+                )
+            if source_artifact != "pm_spec" or not source_version:
+                errors.append(
+                    f"UX artifact link {artifact_id} requires a PM Spec source version"
+                )
 
     milestone_ids = {item.get("id") for item in state["milestones"]}
     for milestone in state["milestones"]:
@@ -1918,6 +1977,9 @@ def build_parser() -> argparse.ArgumentParser:
     artifact_link.add_argument("--location", required=True)
     artifact_link.add_argument("--kind", required=True)
     artifact_link.add_argument("--owner", required=True)
+    artifact_link.add_argument("--version")
+    artifact_link.add_argument("--source-artifact", choices=ARTIFACT_KEYS)
+    artifact_link.add_argument("--source-version")
 
     test_parser = subparsers.add_parser(
         "set-test", help="Record Test validation state and evidence"
@@ -2194,7 +2256,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "artifact-link":
             state = mutate(
                 lambda value: add_artifact_link(
-                    value, args.id, args.label, args.location, args.kind, args.owner
+                    value,
+                    args.id,
+                    args.label,
+                    args.location,
+                    args.kind,
+                    args.owner,
+                    version=args.version,
+                    source_artifact=args.source_artifact,
+                    source_version=args.source_version,
                 )
             )
         elif args.command == "set-test":

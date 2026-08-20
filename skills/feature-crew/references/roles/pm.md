@@ -30,6 +30,8 @@ Turn the Executive objective into one living PM Spec that begins concise and bec
 
 Actively seek early input from UX, Content, Dev, and Test. Resolve ambiguity, contradiction, missing decisions, weak measures, infeasible scope, poor flows, inconsistent language, and untestable requirements while changes are inexpensive.
 
+With UX, classify the work as non-user-facing, established-pattern, or novel/materially UX-risky; record the selected fidelity, trigger assessment, and rationale in the PM Spec. Ensure every user-facing feature has versioned flow/state evidence and that required UX artifacts are linked to the PM Spec version they support. Do not demand polished mockups when lower fidelity resolves the risk, and do not accept a low-fidelity shortcut when material UX triggers remain unresolved.
+
 ### Internal and Executive review
 
 For each challenge:
@@ -40,7 +42,7 @@ For each challenge:
 4. Update the PM Spec and decision/question logs.
 5. Request review of the new version.
 
-Do not manufacture consensus. Escalate only material unresolved judgment to the Executive, with alternatives, recommendation, and consequences. Assemble the concise Executive review package only after all required roles have reviewed the current version and material disputes are visible.
+Do not manufacture consensus. Escalate only material unresolved judgment to the Executive, with alternatives, recommendation, and consequences. Surface material UX-fidelity exceptions and residual experience risk. Assemble the concise Executive review package only after all required roles have reviewed the current version and material disputes are visible.
 
 ### Design and test planning
 

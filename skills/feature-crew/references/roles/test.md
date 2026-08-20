@@ -11,7 +11,7 @@ Own validation strategy, traceability, execution, evidence, and the Test Passed 
 Own, as applicable:
 
 - test objectives, scope, entry criteria, exit criteria, acceptance criteria, and known gaps;
-- mapping test IDs to PM requirements, Dev Design elements, scenarios, and acceptance criteria;
+- mapping test IDs to PM requirements, Dev Design elements, scenarios, approved UX artifact versions, and acceptance criteria;
 - environments, configurations, accounts, data, devices, platforms, and versions;
 - functional, negative, boundary, edge, failure, partial-failure, interruption, unexpected-state, and recovery coverage;
 - integration, end-to-end, and regression testing;
@@ -33,7 +33,7 @@ Verify the design supplies the hooks, interfaces, telemetry, data, environments,
 
 ### Test Plan
 
-After Dev Design approval, author the Test Plan. Cover every important P0/P1 requirement and customer scenario, with risk-based P2 coverage. Include negative and edge cases, integration and E2E paths, regressions, UX/Content, accessibility, world readiness, performance/reliability, security/privacy, telemetry, and rollout/rollback where applicable.
+After Dev Design approval, author the Test Plan. Cover every important P0/P1 requirement and customer scenario, with risk-based P2 coverage. Include negative and edge cases, integration and E2E paths, regressions, UX/Content, accessibility, world readiness, performance/reliability, security/privacy, telemetry, and rollout/rollback where applicable. Map UX parity checks to exact approved artifact versions and require interactive evidence for flows that cannot be established by static screenshots.
 
 Define objective entry and exit criteria and the evidence that will be retained. Record intentional gaps and residual uncertainty honestly. During review, propagate upstream inconsistencies rather than papering them over.
 
@@ -41,7 +41,7 @@ Define objective entry and exit criteria and the evidence that will be retained.
 
 Prepare validation during Execution without declaring success early. In Validation, execute the approved plan against the relevant artifact or environment, capture actual evidence, and record failures with requirement/test IDs and reproducible facts.
 
-Automated tests are one evidence source. A green suite alone does not establish Test Passed if required manual, integration, end-to-end, accessibility, localization, performance, security/privacy, telemetry, or rollback checks remain.
+Automated tests are one evidence source. A green suite alone does not establish Test Passed if required manual, integration, end-to-end, UX implementation-parity, accessibility, localization, performance, security/privacy, telemetry, or rollback checks remain.
 
 Set Test Passed only when the agreed exit criteria and acceptance criteria pass and evidence is available. If any required criterion fails or required evidence is missing, report Failed or In Progress. After Test Passed, participate in crew review; PM, not Test, owns Done.
 

@@ -164,19 +164,60 @@ class FeatureCrewStateTests(unittest.TestCase):
         self.assertTrue(fc.unresolved_material_reviews(state["artifacts"]["pm_spec"]))
 
     # FC-05
-    def test_05_ux_can_challenge_poor_user_flow(self):
+    def test_05_ux_enforces_appropriate_design_fidelity(self):
         state = self.new_state()
         fc.transition(state, "PM Spec Drafting", "PM", "Begin PM specification")
         fc.transition(state, "PM Spec Internal Review", "PM", "Ready for review")
-        fc.record_review(
+        with self.assertRaisesRegex(fc.StateError, "exact artifact version"):
+            fc.add_artifact_link(
+                state,
+                "UXA-001",
+                "Responsive recovery flow",
+                "design/feature-x-recovery.fig",
+                "ux-high-fidelity-mockup",
+                "UX",
+                source_artifact="pm_spec",
+                source_version="0.1",
+            )
+        with self.assertRaisesRegex(fc.StateError, "current PM Spec version"):
+            fc.add_artifact_link(
+                state,
+                "UXA-002",
+                "Stale recovery flow",
+                "design/feature-x-recovery-old.fig",
+                "ux-high-fidelity-mockup",
+                "UX",
+                version="0.9",
+                source_artifact="pm_spec",
+                source_version="0.0",
+            )
+        fc.add_artifact_link(
+            state,
+            "UXA-001",
+            "Responsive recovery flow",
+            "design/feature-x-recovery.fig",
+            "ux-high-fidelity-mockup",
+            "UX",
+            version="1.0",
+            source_artifact="pm_spec",
+            source_version="0.1",
+        )
+        self.assertEqual(state["artifact_links"][0]["source_version"], "0.1")
+        review_id = fc.record_review(
             state,
             "pm_spec",
             "UX",
             "challenge",
-            "The recovery path traps the customer after a partial failure",
+            "The new cross-device recovery flow lacks a fidelity rationale and "
+            "omits its responsive error state, which could trap the customer",
         )
         challenge = fc.unresolved_material_reviews(state["artifacts"]["pm_spec"])[0]
         self.assertEqual(challenge["role"], "UX")
+        self.assertIn(
+            review_id, " ".join(fc.artifact_review_readiness(state, "pm_spec"))
+        )
+        with self.assertRaisesRegex(fc.StateError, "not ready for Executive review"):
+            fc.transition(state, "PM Spec Executive Review", "PM", "Ready")
 
     # FC-06
     def test_06_content_can_challenge_ambiguous_language(self):

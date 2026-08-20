@@ -5,6 +5,7 @@
 - **Owner:** Dev
 - **Lifecycle State:** Draft
 - **Approved PM Spec:** <version and link>
+- **Approved UX artifacts:** <IDs, exact versions, and links, or None for approved non-user-facing work>
 - **Last Updated:** <date>
 - **Executive Approval:** Not Approved
 
@@ -22,6 +23,14 @@ Every significant technical element must map to an approved requirement or opera
 | PM requirement | Design component/mechanism | Interface/data/testability link | Notes |
 | --- | --- | --- | --- |
 | FR-001 | DES-001 | <IDs> | <reason/tradeoff> |
+
+## UX Implementation Mapping
+
+Map each approved UX artifact version to the implementation mechanisms that preserve it. Record any proposed deviation as an upstream question or specification change; do not silently reinterpret the approved experience.
+
+| UX artifact/version | Covered flows/states | Components and mechanisms | Responsive, input, and accessibility behavior | Proposed deviation or None |
+| --- | --- | --- | --- | --- |
+| UXA-001 / <version> | <UX IDs> | <DES/component IDs> | <implementation behavior> | <question/change or None> |
 
 ## Architecture
 

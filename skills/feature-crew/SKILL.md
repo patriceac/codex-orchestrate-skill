@@ -65,6 +65,12 @@ An approved artifact remains a source of truth during execution. Dev may challen
 
 For every Executive sign-off, use `assets/templates/executive-review-package.md` and record the approved artifact version. Do not request approval while hiding a material disagreement.
 
+## Match UX fidelity to product risk
+
+For every feature, classify the UX scope in the PM Spec as `Non-user-facing`, `Established-pattern user experience`, or `Novel or materially UX-risky`. A user-facing feature always needs versioned flow-and-state evidence. Use established design-system references or annotated flows for conventional work; require high-fidelity mockups when interaction, hierarchy, responsive behavior, accessibility, brand, complex states, or cross-team ambiguity materially affects the outcome. Require an interactive prototype only when static artifacts cannot resolve temporal behavior, motion, gesture, focus, or multi-step interaction.
+
+Use the lowest fidelity that resolves the actual risk, not the lowest effort or the greatest polish. A `Non-user-facing` classification or an exception to a high-fidelity trigger needs a written rationale and residual-risk disposition. Link UX artifacts in canonical state with stable IDs, exact versions, and the PM Spec version they support. The UX role must challenge a missing classification, insufficient state coverage, an unjustified fidelity choice, or missing required artifacts; that unresolved challenge blocks Executive Review through the normal review gate. Apply the detailed criteria in [references/lifecycle-and-collaboration.md](references/lifecycle-and-collaboration.md).
+
 ## Execute the approved design
 
 After all three approvals, decompose only to:

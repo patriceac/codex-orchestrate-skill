@@ -64,9 +64,38 @@ Use `P0` for critical ship requirements, `P1` for important initial-release valu
 
 <Detailed functional behavior linked to requirement IDs.>
 
-### UX flows, states, and artifacts
+### UX scope and fidelity decision
 
-<Storyboards, mockups, screenshots, flows, controls, transitions, empty/error/degraded states, and links.>
+- **Classification:** Non-user-facing / Established-pattern user experience / Novel or materially UX-risky
+- **Selected fidelity:** No visual artifact / Annotated existing pattern / Flow-state map / Wireframe / High-fidelity mockup / Interactive prototype
+- **Decision rationale:** <why this is the lowest fidelity that resolves the product risk>
+- **Exception and residual-risk disposition:** <rationale/evidence for non-user-facing work or an exception to a high-fidelity trigger, or None>
+
+| High-fidelity trigger | Applies? | Evidence or rationale |
+| --- | --- | --- |
+| New or unfamiliar workflow | Yes/No | <decision evidence> |
+| Complex, failure, or temporal states | Yes/No | <decision evidence> |
+| Information hierarchy or visual comprehension | Yes/No | <decision evidence> |
+| Responsive, device, or input behavior | Yes/No | <decision evidence> |
+| Accessibility-sensitive interaction | Yes/No | <decision evidence> |
+| Brand-critical surface | Yes/No | <decision evidence> |
+| Multiple implementers/teams or material ambiguity | Yes/No | <decision evidence> |
+
+### UX flows and states
+
+Every user-facing change needs versioned flow-and-state evidence. Cover applicable happy, loading, empty, error, permission, disabled, success, interruption, offline/degraded, and recovery states without inventing irrelevant variants.
+
+| Flow/state ID | Scenario and requirement IDs | Entry/trigger | Interaction and outcome | Exceptional/recovery states | Breakpoints, devices, inputs, and accessibility behavior |
+| --- | --- | --- | --- | --- | --- |
+| UX-001 | SC-01 / FR-001 | <entry> | <behavior/outcome> | <states> | <coverage> |
+
+### UX artifact index
+
+Use stable IDs and add each artifact to canonical `artifact_links`. An interactive prototype is needed only when static artifacts cannot resolve temporal behavior, motion, gesture, focus, or multi-step interaction.
+
+| Artifact ID | Type/fidelity | Exact version | Location | Covered flows/states | Supported PM Spec version | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| UXA-001 | <type> | <version> | <path/link> | <UX IDs> | <version> | UX |
 
 ### Non-UI component behavior
 

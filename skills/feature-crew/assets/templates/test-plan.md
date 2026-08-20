@@ -69,9 +69,19 @@ Cover invalid input, boundaries, failure paths, partial failure, interruption, u
 
 ## UX and Content Validation
 
-| Flow/state/string | Approved source | Devices/locales | Expected behavior/copy | Reviewer |
-| --- | --- | --- | --- | --- |
-| <item> | <artifact/ID> | <coverage> | <result> | UX/Content |
+### UX design and implementation parity
+
+Validate the actual interactive experience against the exact approved UX artifact versions. Cover applicable states, breakpoints, devices, input modes, and accessibility behavior; a static screenshot alone is insufficient evidence for an interactive flow.
+
+| Test ID | Flow/state and requirement | Approved UX artifact/version | Devices, breakpoints, and inputs | Expected interaction and visual result | Evidence | UX result |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-UX-001 | <UX/FR IDs> | <UXA ID/version> | <coverage> | <approved behavior> | <interactive evidence> | Not Run |
+
+### Content in context
+
+| Test ID | Flow/state/string | Approved source/version | Devices/locales | Expected copy and context | Evidence | Content result |
+| --- | --- | --- | --- | --- | --- | --- |
+| T-CONTENT-001 | <item> | <artifact/ID/version> | <coverage> | <approved copy/context> | <evidence> | Not Run |
 
 ## Accessibility
 
@@ -118,13 +128,14 @@ Cover invalid input, boundaries, failure paths, partial failure, interruption, u
 ## Entry Criteria
 
 - Approved PM Spec, Dev Design Spec, and Test Plan versions are recorded.
+- The approved UX classification is recorded, and every required UX artifact ID/version is linked; an approved non-user-facing decision needs no visual artifact.
 - <implementation/environment/data/build readiness criteria>
 
 ## Exit Criteria
 
 - All required acceptance criteria pass with retained evidence.
 - No unresolved required failure remains.
-- Required regression, UX/Content, accessibility, world-readiness, performance/reliability, security/privacy, telemetry, and rollback validation is complete where applicable.
+- Required regression, UX implementation-parity, Content, accessibility, world-readiness, performance/reliability, security/privacy, telemetry, and rollback validation is complete where applicable.
 - Intentional gaps and residual risks are explicit.
 
 ## Known Gaps and Risks

@@ -56,6 +56,18 @@ PM drafts the single living PM Spec with early input from UX and Content and fea
 - UX: complete and coherent flows, states, accessibility implications, and experience quality.
 - Content: terminology and user-visible language are designed, consistent, and localization-ready.
 
+UX review applies this risk-based fidelity policy:
+
+1. Classify the work as `Non-user-facing`, `Established-pattern user experience`, or `Novel or materially UX-risky`.
+2. Every user-facing change must include versioned flow-and-state evidence. An established-pattern change may use annotated existing components, a flow/state map, or a wireframe when those artifacts fully resolve the decisions.
+3. High-fidelity mockups are required when any of these materially affects the product outcome: a new or unfamiliar workflow; complex, failure, or temporal states; information hierarchy or visual comprehension; responsive/device/input behavior; accessibility-sensitive interaction; a brand-critical surface; or ambiguity across multiple implementers or teams.
+4. An interactive prototype is required only when static designs cannot establish motion, gesture, focus, timing, progressive disclosure, or multi-step interaction behavior.
+5. Required designs cover applicable happy, loading, empty, error, permission, disabled, success, interruption, offline/degraded, and recovery states, plus relevant breakpoints and input modes. Do not manufacture irrelevant variants merely to fill a list.
+6. A `Non-user-facing` decision or an exception to a high-fidelity trigger records the rationale, evidence, and residual-risk disposition. UX owns the fidelity judgment; PM owns its product implications. Surface the exception in Executive Review when residual risk is material.
+7. Each UX artifact has a stable ID, artifact type, exact version, owner, link, coverage, and supported PM Spec version in the PM Spec and canonical artifact links.
+
+The lowest fidelity that resolves the product risk is correct. High fidelity is not a substitute for stable requirements or coherent flows, and routine design-system reuse does not need bespoke polished screens when annotated evidence is unambiguous.
+
 Only explicit Executive approval of the reviewed version advances to PM Spec Approved and then Dev Design Drafting.
 
 ## Dev Design gate
@@ -65,13 +77,13 @@ Dev maps every significant design element to approved PM requirement IDs and rec
 - PM: the design implements, rather than reinterprets, approved product intent.
 - Dev: feasibility, architecture, interfaces, data, threats/controls, performance, reliability, observability, compatibility, migration, rollout/rollback, and executable work packages.
 - Test: adequate hooks, environments, data, fault injection, telemetry, and other testability mechanisms.
-- UX and Content: technical choices preserve the approved flow, states, accessibility behavior, terminology, and messages.
+- UX and Content: technical choices preserve the approved flow, states, UX artifact versions, accessibility behavior, terminology, and messages.
 
 If design exposes a PM Spec flaw, return to the PM gate. A material change to approved behavior requires renewed PM review and approval before design continues. Execution remains prohibited after Dev Design approval.
 
 ## Test Plan gate
 
-Test maps tests to PM requirements, Dev Design elements, and acceptance criteria. Reviewers verify coverage of functional, negative, edge, failure, integration, E2E, regression, UX/content, accessibility, world-readiness, performance/reliability, security/privacy, telemetry, and rollout/rollback needs where applicable.
+Test maps tests to PM requirements, Dev Design elements, acceptance criteria, and approved UX artifact versions. Reviewers verify coverage of functional, negative, edge, failure, integration, E2E, regression, UX/content, implementation parity, accessibility, world-readiness, performance/reliability, security/privacy, telemetry, and rollout/rollback needs where applicable.
 
 Entry criteria, exit criteria, known gaps, evidence, environments, configurations, accounts, data, devices, platforms, and versions must be explicit enough to establish confidence. Questions that expose upstream flaws return to the affected specification. Only explicit Executive approval of the reviewed Test Plan permits Execution.
 
@@ -99,7 +111,7 @@ During execution, role responsibilities continue:
 - PM protects intent, prioritizes unblocked work, coordinates dependencies, and maintains the Executive view.
 - Dev implements approved design and engineer-authored tests, reports technical facts promptly, and raises spec conflicts.
 - Test prepares and performs agreed validation, preserving evidence.
-- UX and Content review implementation states and strings, not merely the documents.
+- UX compares the actual interactive experience with the approved flows, states, breakpoints, input modes, and UX artifact versions; Content reviews the actual strings and context, not merely the documents.
 
 For a clarification, update the relevant living document and record why meaning did not change. For a material change, stop affected work, invalidate downstream approvals, update the earliest affected artifact, rerun internal review, and obtain renewed Executive approval where appropriate. Unaffected work may continue if it remains safe and consistent with approved direction.
 

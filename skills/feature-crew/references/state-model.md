@@ -61,7 +61,7 @@ Never invent owners or deadlines merely to fill fields.
 
 ### Relevant artifact links
 
-Track stable IDs, labels, paths or URLs, artifact kind, and owner for mockups, diagrams, research, builds, dashboards, test evidence, release artifacts, and other project material that is not one of the three primary specifications. Observe the linked system's own access and authorization rules; canonical state stores the reference, not copied secrets.
+Track stable IDs, labels, paths or URLs, artifact kind, and owner for mockups, diagrams, research, builds, dashboards, test evidence, release artifacts, and other project material that is not one of the three primary specifications. UX artifacts additionally record an exact `version`, `pm_spec` as `source_artifact`, and the supported PM Spec `source_version`; use the kinds `ux-flow`, `ux-wireframe`, `ux-high-fidelity-mockup`, or `ux-prototype`. The PM Spec artifact index records which flows/states each link covers. Link records are immutable evidence: add a new canonical link ID for a new UX artifact version and retain the prior record. Observe the linked system's own access and authorization rules; canonical state stores the reference, not copied secrets.
 
 ### Milestones and work packages
 
@@ -91,7 +91,8 @@ Run `python scripts/project_state.py --help` for commands. Important operations 
 - `review` / `resolve-review`: record specialist approval or challenge and its resolution.
 - `approve` / `reject`: record Executive review outcomes.
 - `change`: record minor or material specification changes and invalidate downstream state.
-- `decision`, `question`, `risk-add`, `issue-add`, `ask-add`, `dependency-add`, and `artifact-link`: maintain the lightweight project records without editing JSON by hand.
+- `decision`, `question`, `risk-add`, `issue-add`, `ask-add`, and `dependency-add`: maintain the lightweight project records without editing JSON by hand.
+- `artifact-link`: record a project artifact; UX kinds require `--version`, `--source-artifact pm_spec`, and the current PM Spec `--source-version`.
 - `set-test`, `agree`, `declare-done`, and `complete`: preserve the Test Passed/Done/Completed boundaries.
 
 The helper is a guardrail, not a replacement for role judgment. Do not directly edit state to force an invalid transition.
